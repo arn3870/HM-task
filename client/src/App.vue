@@ -3,7 +3,7 @@
     <div class="bg-[#2E77AE] h-screen flex items-center justify-center">
       <FormComponent @addQuestion="addQuestion" />
     </div>
-    <div class="bg-[#E0EAF5]">
+    <div class="bg-[#E0EAF5] overflow-y-auto">
       <PreviewComponent :questions="questions" />
     </div>
   </div>

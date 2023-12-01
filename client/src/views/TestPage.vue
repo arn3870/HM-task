@@ -1,12 +1,14 @@
 <template>
   <div>
-    <div v-for="question in questions" :key="question._id.$oid">
-      <h2>{{ question.question }}</h2>
-      <ul>
-        <li v-for="option in question.options" :key="option._id.$oid">
-          {{ option.value }} - {{ option.correct ? "Correct" : "Incorrect" }}
-        </li>
-      </ul>
+    <div v-for="worksheet in questions" :key="worksheet._id">
+      <div v-for="question in worksheet.questions" :key="question._id">
+        <h2>{{ question.question }}</h2>
+        <ul>
+          <li v-for="option in question.options" :key="option._id">
+            {{ option.value }} - {{ option.correct ? "Correct" : "Incorrect" }}
+          </li>
+        </ul>
+      </div>
     </div>
   </div>
 </template>

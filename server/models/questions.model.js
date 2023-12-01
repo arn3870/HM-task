@@ -7,9 +7,13 @@ const optionSchema = new mongoose.Schema({
 });
 
 const questionSchema = new mongoose.Schema({
-  id: Number,
-  question: String,
-  options: [optionSchema],
+  questions: [
+    {
+      id: Number,
+      question: String,
+      options: [optionSchema],
+    }
+  ]
 });
 
 const Question = mongoose.model('Question', questionSchema);

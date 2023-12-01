@@ -33,22 +33,32 @@
 
 <script>
 import OptionFormComponent from "./OptionFormComponent.vue";
+import { useQuestionsStore } from '../stores/questionsStore';
 import { ref } from "vue";
 
 export default {
   setup(_, { emit }) {
     const newQuestion = ref("");
     const options = ref([]);
+    const questionsStore = useQuestionsStore();
 
     function addOption() {
       options.value.push({ value: "", correct: false });
     }
 
-    function addQuestion() {
-      emit('add-question', { question: newQuestion.value, options: options.value });
+    const addQuestion = () => {
+      const question = {
+        question: newQuestion.value,
+        options: options.value,
+      };
+
+      // Update the questions array in the Pinia store
+      questionsStore.addQuestion(question);
+
+      // Clear form inputs
       newQuestion.value = '';
       options.value = [];
-    }
+    };
 
     return {
       newQuestion,

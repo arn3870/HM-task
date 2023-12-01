@@ -2,7 +2,11 @@
   <div class="px-[20px]">
     <h3 class="text-center text-[40px] font-bold">Preview</h3>
     <ul>
-      <li v-for="(question, index) in questions" :key="index" class="font-bold">
+      <li
+        v-for="(question, index) in questions"
+        :key="index"
+        class="font-bold"
+      >
         {{ question.question }}
         <ul>
           <li
@@ -30,12 +34,12 @@
 
 <script>
 import { defineComponent } from "vue";
+import { useQuestionsStore } from "../stores/questionsStore";
 
 export default defineComponent({
-  props: {
-    questions: Array,
-  },
-  setup(context) {
+  setup() {
+    const questionsStore = useQuestionsStore();
+    let questions = questionsStore.questions
     async function createQuestion() {
       try {
         const response = await fetch("http://localhost:3000/api/questions", {
@@ -44,7 +48,7 @@ export default defineComponent({
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
-            questions: context.questions,
+            questions: questions,
           }),
         });
         if (!response.ok) {
@@ -58,6 +62,7 @@ export default defineComponent({
     }
     return {
       createQuestion,
+      questions
     };
   },
 });

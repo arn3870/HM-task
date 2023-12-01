@@ -18,6 +18,7 @@
     </ul>
     <div class="flex justify-center">
       <button
+        @click="createQuestion()"
         type="submit"
         class="bg-[#0d2137] text-[#fff] p-[10px] rounded-[10px] w-fit"
       >
@@ -33,6 +34,31 @@ import { defineComponent } from "vue";
 export default defineComponent({
   props: {
     questions: Array,
+  },
+  setup(context) {
+    async function createQuestion() {
+      try {
+        const response = await fetch("http://localhost:3000/api/questions", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            questions: context.questions,
+          }),
+        });
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        const data = await response.json();
+        console.log(data);
+      } catch (error) {
+        console.error(error);
+      }
+    }
+    return {
+      createQuestion,
+    };
   },
 });
 </script>

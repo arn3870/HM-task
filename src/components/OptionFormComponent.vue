@@ -1,48 +1,33 @@
 <template>
-  <div class="w-full">
-    <ul>
-      <li v-for="(option, index) in options" :key="index">
-        {{ option.text }}
-        <button @click="removeOption(index)">Remove</button>
-      </li>
-    </ul>
-    <input
-      type="text"
-      v-model="newOption"
-      placeholder="Enter option..."
-      class="w-full rounded-[10px] h-[40px]"
-    />
-    <button @click="addOption" class="bg-[#0d2137] text-[#fff] p-[10px] rounded-[10px]">Add Option</button>
+  <div class="w-full items-center my-3">
+    <div class="flex flex-row">
+      <input
+        v-model="option.value"
+        type="text"
+        placeholder="Enter option value"
+        class="w-full rounded-[10px]"
+      />
+      <input v-model="option.correct" type="checkbox" />
+      <button type="button" @click="removeOption">Remove</button>
+    </div>
   </div>
 </template>
 
 <script>
-import { ref } from "vue";
+import { ref, defineComponent } from "vue";
 
-export default {
+export default defineComponent({
   props: {
-    options: Array,
+    option: Object,
   },
-  setup(props, { emit }) {
-    const newOption = ref("");
-
-    const addOption = () => {
-      if (newOption.value.trim() !== "") {
-        emit("addOption", { text: newOption.value, correct: false });
-        // Reset input field
-        newOption.value = "";
-      }
-    };
-
-    const removeOption = (index) => {
-      emit("removeOption", index);
-    };
+  setup(_, { emit }) {
+    function removeOption() {
+      emit("remove-option", option);
+    }
 
     return {
-      newOption,
-      addOption,
       removeOption,
     };
   },
-};
+});
 </script>

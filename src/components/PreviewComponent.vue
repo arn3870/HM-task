@@ -1,26 +1,26 @@
 <template>
-  <div class="preview-component">
-    <h2 class="text-center text-[40px] font-bold">Preview</h2>
-    <ul>
-      <li v-for="(question, index) in questions" :key="index">
-        <strong>{{ question.question }}</strong>
-        <ul>
-          <li
-            v-for="(option, optionIndex) in question.options"
-            :key="optionIndex"
-          >
-            {{ option.text }}
-          </li>
-        </ul>
-      </li>
-    </ul>
+  <div>
+     <h3 class="text-center text-[40px] font-bold">Preview</h3>
+     <ul>
+       <li v-for="(question, index) in questions" :key="index" class="font-bold">
+         {{ question.question }}
+         <ul>
+           <li v-for="(option, i) in question.options" :key="i" class="font-normal">
+             {{ option.value }}
+             <span v-if="option.correct">(correct)</span>
+           </li>
+         </ul>
+       </li>
+     </ul>
   </div>
-</template>
-
-<script>
-export default {
+ </template>
+ 
+ <script>
+ import { defineComponent } from 'vue';
+ 
+ export default defineComponent({
   props: {
-    questions: Array,
+     questions: Array,
   },
-};
-</script>
+ });
+ </script>

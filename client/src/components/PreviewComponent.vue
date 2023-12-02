@@ -1,25 +1,30 @@
 <template>
   <div class="px-[20px]">
     <h3 class="text-center text-[40px] font-bold">Preview</h3>
-    <ul>
-      <li
-        v-for="(question, index) in questions"
-        :key="index"
-        class="font-bold"
-      >
-        {{ question.question }}
-        <ul>
-          <li
-            v-for="(option, i) in question.options"
-            :key="i"
-            class="font-normal"
-          >
-            {{ option.value }}
-            <span v-if="option.correct">(correct)</span>
-          </li>
-        </ul>
-      </li>
-    </ul>
+    <div class="bg-white p-4 rounded-md shadow-md mb-4">
+      <ul>
+        <li
+          v-for="(question, index) in questions"
+          :key="index"
+          class="font-bold"
+        >
+          {{ `Question ${index + 1}: ${question.question}` }}
+          <ul class="list-disc ml-6">
+            <li
+              v-for="(option, i) in question.options"
+              :key="i"
+              class="font-normal mb-2"
+            >
+              <input v-model="option.correct" type="checkbox" class="mr-2" />
+              <span :class="{ 'text-green-500': option.correct }">
+                {{ option.value }}
+              </span>
+              <span v-if="option.correct">(correct)</span>
+            </li>
+          </ul>
+        </li>
+      </ul>
+    </div>
     <div class="flex justify-center">
       <button
         @click="createQuestion()"
@@ -39,7 +44,7 @@ import { useQuestionsStore } from "../stores/questionsStore";
 export default defineComponent({
   setup() {
     const questionsStore = useQuestionsStore();
-    let questions = questionsStore.questions
+    let questions = questionsStore.questions;
     async function createQuestion() {
       try {
         const response = await fetch("http://localhost:3000/api/questions", {
@@ -62,7 +67,7 @@ export default defineComponent({
     }
     return {
       createQuestion,
-      questions
+      questions,
     };
   },
 });

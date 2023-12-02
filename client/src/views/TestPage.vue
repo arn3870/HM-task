@@ -1,13 +1,36 @@
 <template>
-  <div>
-    <div v-for="worksheet in questions" :key="worksheet._id">
-      <div v-for="question in worksheet.questions" :key="question._id">
-        <h2>{{ question.question }}</h2>
-        <ul>
-          <li v-for="option in question.options" :key="option._id">
-            {{ option.value }} - {{ option.correct ? "Correct" : "Incorrect" }}
-          </li>
-        </ul>
+  <div
+    class="bg-[#E0EAF5] min-h-screen flex flex-col items-center justify-center"
+  >
+    <div class="my-10 mx-8">
+      <h1 class="font-bold text-3xl text-center mb-4">Test Questions</h1>
+      <p class="font-bold text-sm text-center mb-4">
+        Please choose the correct answer from the below questions. You can
+        choose one or more options. The text color of the correct answer will
+        turn green upon selection.
+      </p>
+      <div v-for="worksheet in questions" :key="worksheet._id">
+        <div
+          v-for="(question, index) in worksheet.questions"
+          :key="question._id"
+          class="bg-white p-4 rounded-md shadow-md mb-4"
+        >
+          <h2 class="font-bold text-lg">
+            {{ `Question ${index + 1}: ${question.question}` }}
+          </h2>
+          <ul class="list-disc ml-6">
+            <li
+              v-for="option in question.options"
+              :key="option._id"
+              class="mb-2"
+            >
+              <input v-model="option.correct" type="checkbox" class="mr-2" />
+              <span :class="{ 'text-green-500': option.correct }">{{
+                option.value
+              }}</span>
+            </li>
+          </ul>
+        </div>
       </div>
     </div>
   </div>

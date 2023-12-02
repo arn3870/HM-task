@@ -2,10 +2,11 @@
   <div class="w-full items-center my-3">
     <div class="flex flex-row items-center space-x-2">
       <input
-        v-model="option.value"
+        v-model.trim="option.value"
         type="text"
         placeholder="Enter option value"
         class="w-full rounded-md p-2"
+        required
       />
       <input v-model="option.correct" type="checkbox" />
       <div @click="removeOption" class="cursor-pointer">
@@ -16,7 +17,7 @@
 </template>
 
 <script>
-import { ref, defineComponent } from "vue";
+import { defineComponent } from "vue";
 import RemoveIcon from "./icons/RemoveIcon.vue";
 
 export default defineComponent({
@@ -25,9 +26,9 @@ export default defineComponent({
     option: Object,
   },
   setup(props, { emit }) {
-    function removeOption() {
+    const removeOption = () => {
       emit("remove-option", props.option);
-    }
+    };
 
     return {
       removeOption,

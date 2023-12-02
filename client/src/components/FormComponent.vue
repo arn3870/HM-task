@@ -1,14 +1,16 @@
 <template>
-  <div class="w-full mx-[20px] flex flex-col items-center space-y-3">
-    <h2 class="text-center text-[40px] font-bold text-white">Add questions</h2>
-    <form
-      @submit.prevent="addQuestion"
-      class="w-full flex flex-col justify-center items-center space-y-3"
-    >
+  <div class="w-full mx-4 flex flex-col items-center space-y-6">
+    <h2 class="text-center text-4xl font-bold text-white">Add Questions</h2>
+    <p class="font-bold text-sm text-center text-white">
+      Please type in a question and click the "Add Option" button to add options. Once done, click the "Add Question" button to preview.
+    </p>
+
+    <form @submit.prevent="addQuestion" class="w-full flex flex-col items-center space-y-4">
       <textarea
-        v-model="newQuestion"
+        v-model.trim="newQuestion"
         placeholder="Enter your question"
         class="w-full rounded-md p-2"
+        required
       />
       <option-form-component
         v-for="(option, index) in options"
@@ -16,17 +18,17 @@
         :option="option"
         @remove-option="removeOption(index)"
       />
-      <div class="flex flex-col space-y-3">
+      <div class="flex flex-col space-y-4">
         <button
           type="button"
           @click="addOption"
-          class="bg-[#0d2137] text-[#fff] p-[10px] rounded-[10px]"
+          class="btn-primary"
         >
           Add Option
         </button>
         <button
           type="submit"
-          class="bg-[#0d2137] text-[#fff] p-[10px] rounded-[10px]"
+          class="btn-primary"
         >
           Add Question
         </button>
@@ -46,27 +48,40 @@ export default {
     const options = ref([]);
     const questionsStore = useQuestionsStore();
 
-    function addOption() {
+    const addOption = () => {
       options.value.push({ value: "", correct: false });
-    }
+    };
 
     const addQuestion = () => {
+      if (!newQuestion.value.trim()) {
+        alert("Please enter a question.");
+        return;
+      }
+
+      if (options.value.length < 2) {
+        alert("Please add at least two options.");
+        return;
+      }
+
+      if (!options.value.some((option) => option.correct)) {
+        alert("Please choose at least one correct option.");
+        return;
+      }
+
       const question = {
         question: newQuestion.value,
         options: options.value,
       };
 
-      // Update the questions array in the Pinia store
       questionsStore.addQuestion(question);
 
-      // Clear form inputs
       newQuestion.value = "";
       options.value = [];
     };
 
-    function removeOption(index) {
-      this.options.splice(index, 1);
-    }
+    const removeOption = (index) => {
+      options.value.splice(index, 1);
+    };
 
     return {
       newQuestion,
@@ -81,3 +96,19 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+.btn-primary {
+  background-color: #0d2137;
+  color: #fff;
+  padding: 10px;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.btn-primary:hover {
+  background-color: #07212a;
+}
+</style>

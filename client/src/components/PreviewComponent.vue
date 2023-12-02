@@ -4,6 +4,7 @@
     <questions-component :questions="questions"></questions-component>
     <div class="flex justify-center">
       <button
+        v-if="questions.length !== 0"
         @click="createQuestion"
         class="btn-submit bg-blueButton text-[#fff] p-[10px] rounded-[10px] w-fit cursor-pointer"
       >

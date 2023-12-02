@@ -25,11 +25,11 @@ export default {
 </script>
 
 <template>
-  <div class="grid grid-cols-1 md:grid-cols-2 l:grid-cols-2">
-    <div class="bg-secondary h-screen flex items-center justify-center">
+  <div class="grid grid-cols-1 md:grid-cols-2 l:grid-cols-2 min-h-screen">
+    <div class="bg-secondary flex items-center justify-center flex-grow">
       <FormComponent />
     </div>
-    <div class="bg-primary overflow-y-auto">
+    <div class="bg-primary overflow-y-auto flex-grow">
       <PreviewComponent />
     </div>
   </div>

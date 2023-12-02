@@ -8,7 +8,7 @@
         class="w-full rounded-md p-2"
       />
       <input v-model="option.correct" type="checkbox" />
-      <div @click="removeOption">
+      <div @click="removeOption" class="cursor-pointer">
         <remove-icon></remove-icon>
       </div>
     </div>
@@ -24,9 +24,9 @@ export default defineComponent({
   props: {
     option: Object,
   },
-  setup(_, { emit }) {
+  setup(props, { emit }) {
     function removeOption() {
-      emit("remove-option", option);
+      emit("remove-option", props.option);
     }
 
     return {

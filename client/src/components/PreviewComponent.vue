@@ -1,27 +1,25 @@
 <template>
   <div class="px-[20px]">
     <h3 class="text-center text-[40px] font-bold">Preview</h3>
-    <div class="bg-white p-4 rounded-md shadow-md mb-4">
-      <ul>
+    <div
+      v-for="(question, index) in questions"
+      :key="index"
+      class="bg-white p-4 rounded-md shadow-md mb-4"
+    >
+      <h2 class="font-bold">
+        {{ `Question ${index + 1}: ${question.question}` }}
+      </h2>
+      <ul class="list-disc ml-6">
         <li
-          v-for="(question, index) in questions"
-          :key="index"
-          class="font-bold"
+          v-for="(option, i) in question.options"
+          :key="i"
+          class="font-normal mb-2"
         >
-          {{ `Question ${index + 1}: ${question.question}` }}
-          <ul class="list-disc ml-6">
-            <li
-              v-for="(option, i) in question.options"
-              :key="i"
-              class="font-normal mb-2"
-            >
-              <input v-model="option.correct" type="checkbox" class="mr-2" />
-              <span :class="{ 'text-green-500': option.correct }">
-                {{ option.value }}
-              </span>
-              <span v-if="option.correct">(correct)</span>
-            </li>
-          </ul>
+          <input v-model="option.correct" type="checkbox" class="mr-2" />
+          <span :class="{ 'text-green-500': option.correct }">
+            {{ option.value }}
+          </span>
+          <span v-if="option.correct">(correct)</span>
         </li>
       </ul>
     </div>

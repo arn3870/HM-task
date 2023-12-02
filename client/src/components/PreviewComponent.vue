@@ -22,20 +22,14 @@
           Worksheet saved successfully
         </h2>
         <h2 class="font-bold text-sm text-center mb-4">
-          Navigate to the test page?
+          please navigate to the test page by clicking the button below
         </h2>
         <div class="flex flex-row justify-center gap-5">
           <button
             @click="navigateToTest"
             class="bg-blueButton text-white rounded-md cursor-pointer w-[30%]"
           >
-            Yes
-          </button>
-          <button
-            @click="closeModal"
-            class="bg-blueButton text-white p-[10px] rounded-md cursor-pointer w-[30%]"
-          >
-            Close
+            Go to Test
           </button>
         </div>
       </div>
@@ -85,16 +79,11 @@ export default defineComponent({
       router.push(`test/${testId}`);
     };
 
-    const closeModal = () => {
-      show_modal.value = false;
-    };
-
     return {
       createQuestion,
       questions,
       show_modal,
       navigateToTest,
-      closeModal,
     };
   },
 });

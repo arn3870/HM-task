@@ -1,6 +1,6 @@
 <template>
   <div
-    class="bg-[#E0EAF5] min-h-screen flex flex-col items-center justify-center"
+    class="bg-primary min-h-screen flex flex-col items-center justify-center"
   >
     <div class="my-10 mx-8">
       <h1 class="font-bold text-3xl text-center mb-4">Test Questions</h1>
@@ -9,45 +9,41 @@
         choose one or more options. The text color of the correct answer will
         turn green upon selection.
       </p>
-      <div v-for="worksheet in questions" :key="worksheet._id">
-        <div
-          v-for="(question, index) in worksheet.questions"
-          :key="question._id"
-          class="bg-white p-4 rounded-md shadow-md mb-4"
-        >
-          <h2 class="font-bold text-lg">
-            {{ `Question ${index + 1}: ${question.question}` }}
-          </h2>
-          <ul class="list-disc ml-6">
-            <li
-              v-for="option in question.options"
-              :key="option._id"
-              class="mb-2"
-            >
-              <input v-model="option.correct" type="checkbox" class="mr-2" />
-              <span :class="{ 'text-green-500': option.correct }">{{
-                option.value
-              }}</span>
-            </li>
-          </ul>
-        </div>
-      </div>
+      <questions-component :questions="questions"></questions-component>
     </div>
   </div>
 </template>
 
 <script>
 import { ref, onMounted } from "vue";
+import QuestionsComponent from "../components/QuestionsComponent.vue";
 
 export default {
-  setup() {
-    const questions = ref([]);
+  props: {
+    id: {
+      type: String,
+      required: true,
+    },
+  },
+  components: { QuestionsComponent },
+  setup(props, { emit }) {
+    let questions = ref([]);
 
     onMounted(async () => {
       try {
-        const response = await fetch("http://localhost:3000/api/questions");
+        const id = props.id;
+        const response = await fetch(
+          `http://localhost:3000/api/questions?id=${id}`,
+          {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        );
         const data = await response.json();
-        questions.value = data;
+        questions.value = data.questions;
+        console.log("reactive data", data.questions)
       } catch (error) {
         console.log(error);
       }

@@ -9,7 +9,7 @@ const postQuestion = async (req, res) => {
       questions: questions.map(({ id, question, options }) => ({
         id: id,
         question: question,
-        options: options.map(opt => ({
+        options: options.map((opt) => ({
           value: opt.value,
           correct: opt.correct,
         })),
@@ -22,18 +22,21 @@ const postQuestion = async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 };
-
-
-// Controller function to handle GET request
 const getQuestions = async (req, res) => {
   try {
-    const worksheet = await questionSchema.find();
+    const id = req.query.id;
+    const worksheet = await questionSchema.findById(id);
+
+    if (!worksheet) {
+      return res
+        .status(404)
+        .json({ message: "No question found with that ID" });
+    }
     res.json(worksheet);
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
 };
-
 module.exports = {
   postQuestion,
   getQuestions,

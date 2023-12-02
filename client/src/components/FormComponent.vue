@@ -2,10 +2,14 @@
   <div class="w-full mx-4 flex flex-col items-center space-y-6">
     <h2 class="text-center text-4xl font-bold text-white">Add Questions</h2>
     <p class="font-bold text-sm text-center text-white">
-      Please type in a question and click the "Add Option" button to add options. Once done, click the "Add Question" button to preview.
+      Please type in a question and click the "Add Option" button to add
+      options. Once done, click the "Add Question" button to preview.
     </p>
 
-    <form @submit.prevent="addQuestion" class="w-full flex flex-col items-center space-y-4">
+    <form
+      @submit.prevent="addQuestion"
+      class="w-full flex flex-col items-center space-y-4"
+    >
       <textarea
         v-model.trim="newQuestion"
         placeholder="Enter your question"
@@ -19,19 +23,10 @@
         @remove-option="removeOption(index)"
       />
       <div class="flex flex-col space-y-4">
-        <button
-          type="button"
-          @click="addOption"
-          class="btn-primary"
-        >
+        <button type="button" @click="addOption" class="btn-primary">
           Add Option
         </button>
-        <button
-          type="submit"
-          class="btn-primary"
-        >
-          Add Question
-        </button>
+        <button type="submit" class="btn-primary">Add Question</button>
       </div>
     </form>
   </div>

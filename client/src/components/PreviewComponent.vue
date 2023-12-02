@@ -1,6 +1,6 @@
 <template>
   <div class="px-4">
-    <h3 class="text-center text-2xl font-bold">Preview</h3>
+    <h3 class="text-center text-2xl font-bold mb-5">Preview</h3>
     <questions-component :questions="questions"></questions-component>
     <div class="flex justify-center">
       <button
@@ -10,45 +10,35 @@
         Submit Questions
       </button>
     </div>
+
+    <!-- Modal -->
     <div
       v-if="show_modal"
-      class="fixed md:left-[110px] left-0 m-[0!important] top-0 right-0 z-50 w-full h-screen p-4 overflow-x-hidden overflow-y-auto md:inset-0 bg-[#001A35] bg-opacity-40"
+      class="fixed top-0 left-0 w-screen h-screen bg-black bg-opacity-50 flex items-center justify-center"
     >
-      <div
-        class="relative w-full max-h-screen flex justify-center items-center h-full"
-      >
-        <!-- Modal content -->
-        <div
-          class="relative bg-white rounded-lg shadow xl:w-[700px] md:w-[500px] md:top-[-25px] w-full"
-        >
+      <div class="bg-white p-10 rounded-md text-center">
+        <h2 class="text-center text-2xl font-bold mb-5">
+          Worksheet saved successfully
+        </h2>
+        <h2 class="font-bold text-sm text-center mb-4">
+          Navigate to the test page?
+        </h2>
+        <div class="flex flex-row justify-center gap-5">
           <button
-            @click="toggleModal"
-            type="button"
-            class="absolute top-3 right-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-800 dark:hover:text-white"
+            @click="navigateToTest"
+            class="bg-blueButton text-white rounded-md cursor-pointer w-[30%]"
           >
-            <svg
-              aria-hidden="true"
-              class="w-5 h-5"
-              fill="currentColor"
-              viewBox="0 0 20 20"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                fill-rule="evenodd"
-                d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
-                clip-rule="evenodd"
-              ></path>
-            </svg>
-            <span class="sr-only">Close modal</span>
+            Yes
           </button>
-          <div
-            class="w-full m-auto bg-white px-[20px] py-[30px] rounded-[10px]"
-          ></div>
-          This is a modal
+          <button
+            @click="closeModal"
+            class="bg-blueButton text-white p-[10px] rounded-md cursor-pointer w-[30%]"
+          >
+            Close
+          </button>
         </div>
       </div>
     </div>
-    <button @click="navigateToTest">nav button</button>
   </div>
 </template>
 
@@ -63,8 +53,9 @@ export default defineComponent({
   setup() {
     const questionsStore = useQuestionsStore();
     const questions = questionsStore.questions;
-    let show_modal = ref(false);
+    const show_modal = ref(false);
     const router = useRouter();
+
     const createQuestion = async () => {
       try {
         const response = await fetch("http://localhost:3000/api/questions", {
@@ -81,32 +72,29 @@ export default defineComponent({
         }
         const data = await response.json();
         localStorage.setItem("testId", JSON.stringify(data._id));
-        show_modal = true;
+        show_modal.value = true;
         console.log(data);
       } catch (error) {
         console.error(error);
       }
     };
+
     const navigateToTest = () => {
       const testId = JSON.parse(localStorage.getItem("testId"));
       router.push(`test/${testId}`);
     };
+
+    const closeModal = () => {
+      show_modal.value = false;
+    };
+
     return {
       createQuestion,
       questions,
       show_modal,
       navigateToTest,
+      closeModal,
     };
   },
 });
 </script>
-
-<style scoped>
-.btn-submit {
-  transition: background-color 0.3s;
-}
-
-.btn-submit:hover {
-  background-color: #07212a;
-}
-</style>
